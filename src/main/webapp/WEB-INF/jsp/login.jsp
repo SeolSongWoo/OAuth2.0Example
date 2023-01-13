@@ -31,7 +31,7 @@
             <input type="password" id="password" name="password" class="form-control" placeholder="Password" required="">
         </p>
         <button class="btn btn-lg btn-primary btn-block" onclick="logincheck();">로그인</button>
-        <button class="btn btn-lg btn-success btn-block" >네이버 로그인</button>
+        <a class="btn btn-lg btn-success btn-block" href="${APIURL}" >네이버 로그인</a>
         <button class="btn btn-lg btn-info btn-block" onclick="location.href='/login/signup'">회원가입</button>
     </div>
 </div>
