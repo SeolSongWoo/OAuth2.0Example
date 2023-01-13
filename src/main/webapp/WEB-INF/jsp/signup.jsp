@@ -24,7 +24,7 @@
         <h2 class="form-signin-heading">Please sign up</h2>
         <p>
             <label for="user_name" class="sr-only">Username</label>
-            <input type="text" id="user_name" name="AccountInFor" class="form-control" placeholder="이름" required="" autofocus="">
+            <input type="text" id="user_name" name="AccountInFor" class="form-control" placeholder="이름" required="" autofocus="" value="${NaverUserData.name}">
         </p>
         <p>
             <label for="user_id" class="sr-only">Username</label>
@@ -34,10 +34,10 @@
             <label for="user_password" class="sr-only">Password</label>
             <input type="password" id="user_password" name="AccountInFor" class="form-control" placeholder="비밀번호" required="">
         </p>
-            <input type="hidden" id="user_type" name="AccountInFor" value="${user_type}"/>
+            <input type="hidden" id="user_type" name="AccountInFor" value="${NaverUserData.type}"/>
         <p>
             <label for="user_email" class="sr-only">Username</label>
-            <input type="text" id="user_email" name="AccountInFor" class="form-control" placeholder="이메일" required="" autofocus="">
+            <input type="text" id="user_email" name="AccountInFor" class="form-control" placeholder="이메일" required="" autofocus="" value="${NaverUserData.email}">
         </p>
         <p>
             <label for="user_sex" class="sr-only">Username</label>

@@ -1,6 +1,7 @@
 package com.example.oauth2_0example.model.dto;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import org.json.JSONObject;
@@ -8,6 +9,7 @@ import org.json.JSONObject;
 @Getter
 @Setter
 @ToString
+@NoArgsConstructor
 public class NaverUserDto {
 
     private String mobile;
@@ -15,6 +17,8 @@ public class NaverUserDto {
     private String id;
     private String email;
     private String mobile_e164;
+
+    private String Type = "NAVER";
 
 
     public NaverUserDto(String userData) {

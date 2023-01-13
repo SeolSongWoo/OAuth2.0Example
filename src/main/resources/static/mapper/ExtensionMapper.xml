@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.oauth2_0example.service.Mapper.ExtensionMapper">
+    <select id="findByUserId" resultType="UserVO">
+        SELECT * FROM account WHERE 1=1 and user_email = #{user_email}
+    </select>
+
+    <insert id="SignUp">
+        INSERT INTO account(user_name,user_id,user_password,user_type,user_role,user_email,user_sex) VALUES (#{user_name},#{user_id},#{user_password},#{user_type},'USER',
+                                                                                                             #{user_email},#{user_sex})
+    </insert>
+
+</mapper>

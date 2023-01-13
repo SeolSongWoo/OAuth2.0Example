@@ -2,14 +2,18 @@ package com.example.oauth2_0example.controller;
 
 import com.example.oauth2_0example.helper.WebHelper;
 import com.example.oauth2_0example.model.dto.NaverUserDto;
+import com.example.oauth2_0example.model.dto.UserDTO;
+import com.example.oauth2_0example.model.vo.UserVO;
 import com.example.oauth2_0example.oauth.NaverOAuth;
+import com.example.oauth2_0example.service.ServiceImpl.UserService;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedReader;
@@ -26,6 +30,9 @@ public class MainController {
 
     @Autowired
     WebHelper web;
+
+    @Autowired
+    UserService userService;
     @GetMapping("/login")
     public ModelAndView login(Model model) throws Exception {
         String clientId = "nMUNpsgNjmad0FDEnocF";//애플리케이션 클라이언트 아이디값";
@@ -46,7 +53,7 @@ public class MainController {
     public String GotoMain() { return "redirect:/login";}
 
     @GetMapping("/main")
-    public ModelAndView Main(Model model, HttpServletResponse response) throws Exception{
+    public ModelAndView Main(Model model, HttpServletResponse response, RedirectAttributes rttr) throws Exception{
         web.init(response);
         String clientId = "nMUNpsgNjmad0FDEnocF";//애플리케이션 클라이언트 아이디값";
         String clientSecret = "b3Y4hXHA1I";//애플리케이션 클라이언트 시크릿값";
@@ -89,29 +96,42 @@ public class MainController {
         } catch (Exception e) {
             System.out.println(e);
         }
-        NaverUserDto NaverUser = null;
+        NaverUserDto naverUserDto = null;
         try {
             NaverOAuth naverOAuth = new NaverOAuth(jsonObject.getString("access_token"));
-            NaverUser = new NaverUserDto(naverOAuth.get());
+            naverUserDto = new NaverUserDto(naverOAuth.get());
         } catch (JSONException e) {
             e.printStackTrace();
-            return new ModelAndView("login");
+            return new ModelAndView("redirect:login");
         }
 
+        rttr.addFlashAttribute("naverUserDto",naverUserDto);
 
 
-
-        return new ModelAndView("main");
+        if(userService.findByUserId(naverUserDto.getEmail()).isPresent()) {
+            return new ModelAndView("main");
+        } else {
+            return new ModelAndView("redirect:login/signup");
+        }
     }
 
 
     @GetMapping("/login/signup")
-    public ModelAndView signup() {
-
-
-
-
+    public ModelAndView signup(@ModelAttribute NaverUserDto naverUserDto, Model model, HttpServletResponse response) {
+        web.init(response);
+        model.addAttribute("NaverUserData",naverUserDto);
         return new ModelAndView("signup");
     }
 
+    @PostMapping("login/signup/post")
+    public void signupPost(@RequestBody UserDTO userDTO) {
+        if(userDTO.getUser_type().isEmpty()) {
+            userDTO.setUser_type("NONE");
+        }
+        try {
+            userService.SignUp(userDTO);
+        } catch (Exception e) {
+
+        }
+    }
 }
